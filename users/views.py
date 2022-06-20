@@ -1,7 +1,9 @@
+from multiprocessing import context
 from django.shortcuts import redirect, render
 from .forms import NewuserForm
 from django.contrib.auth.decorators import login_required
 from .models import Profile
+from django.contrib.auth.models import User
 def register(request):
     if request.method =='POST':
         form = NewuserForm(request.POST)
@@ -28,3 +30,10 @@ def create_profile(request):
         profile = Profile(user=user,image=image,contact_number=contact_number)
         profile.save()
     return render(request,'users/createprofile.html')
+
+def seller_profile(request,id):
+    seller = User.objects.get(id=id)
+    context = {
+        'seller':seller,
+    }
+    return render(request,'users/sellerprofile.html',context)
